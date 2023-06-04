@@ -1,7 +1,31 @@
 {
-  "name": "nodejs",
+  "name": "nodejs_course",
   "version": "1.0.0",
+  "description": "nodejs_course",
+  "main": "src/app.ts",
+  "scripts": {
+    "start": "rimraf dist && tsc-watch --onSuccess \"npm run watch\"",
+    "watch": "nodemon \"src/app.ts\" --watch \"./src\""
+  },
+  "keywords": [],
+  "author": "Ihor Zakatsiura <zakatsiura@gmail>",
+  "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "eslint": "^8.42.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "nodemon": "^2.0.22",
+    "rimraf": "^5.0.1",
+    "ts-node": "^10.9.1",
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.1.3"
   }
 }
