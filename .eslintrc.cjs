@@ -32,7 +32,7 @@ module.exports = {
         "import/first": "error",
         "import/newline-after-import": ["error", { "count": 1 }],
         "import/no-duplicates": "error",
-        'no-console': 'warn',
+        // 'no-console': 'warn',
         'sort-imports': ['error', {
             'ignoreCase': true,
             'ignoreDeclarationSort': true,
