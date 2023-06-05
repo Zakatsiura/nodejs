@@ -81,6 +81,13 @@ app.delete("/users/:id", async (req, res) => {
     }
 });
 app.listen(config_1.configs.PORT || 5000, () => {
-    mongoose.connect(config_1.configs.DB_URL);
-    console.log(`Server has been started on PORT ${config_1.configs.PORT}`);
+    mongoose
+        .connect(config_1.configs.DB_URL)
+        .then(() => {
+        console.log(`Connected to MongoDB`);
+        console.log(`Server has been started on PORT ${config_1.configs.PORT}`);
+    })
+        .catch((error) => {
+        console.error(`Failed to connect to MongoDB: ${error}`);
+    });
 });

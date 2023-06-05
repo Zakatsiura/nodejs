@@ -82,6 +82,13 @@ app.delete(
 );
 
 app.listen(configs.PORT || 5000, () => {
-  mongoose.connect(configs.DB_URL);
-  console.log(`Server has been started on PORT ${configs.PORT}`);
+  mongoose
+    .connect(configs.DB_URL)
+    .then(() => {
+      console.log(`Connected to MongoDB`);
+      console.log(`Server has been started on PORT ${configs.PORT}`);
+    })
+    .catch((error) => {
+      console.error(`Failed to connect to MongoDB: ${error}`);
+    });
 });
