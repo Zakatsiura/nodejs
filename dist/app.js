@@ -80,7 +80,7 @@ app.delete("/users/:id", async (req, res) => {
         console.log(e);
     }
 });
-app.listen(config_1.configs.PORT, () => {
+app.listen(config_1.configs.PORT || 5000, () => {
     mongoose.connect(config_1.configs.DB_URL);
-    console.log(`Server has started on PORT ${config_1.configs.PORT} 🥸`);
+    console.log(`Server has been started on PORT ${config_1.configs.PORT}`);
 });

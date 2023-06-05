@@ -81,7 +81,7 @@ app.delete(
   }
 );
 
-app.listen(configs.PORT, () => {
+app.listen(configs.PORT || 5000, () => {
   mongoose.connect(configs.DB_URL);
-  console.log(`Server has started on PORT ${configs.PORT} 🥸`);
+  console.log(`Server has been started on PORT ${configs.PORT}`);
 });
