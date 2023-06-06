@@ -1,14 +1,18 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import * as mongoose from "mongoose";
 
 import { configs } from "./configs/config";
+import { ApiError } from "./errors";
 import { User } from "./models/User.model";
 import { IUser } from "./types/user.type";
+import { UserValidator } from "./validators";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// CRUD - create, read, update, delete
 
 app.get(
   "/users",
@@ -19,6 +23,27 @@ app.get(
       return res.json(users);
     } catch (e) {
       console.log(e);
+    }
+  }
+);
+
+app.post(
+  "/users",
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<IUser>> => {
+    try {
+      const { error, value } = UserValidator.create.validate(req.body);
+      if (error) {
+        throw new ApiError(error.message, 400);
+      }
+      const createdUser = await User.create(value);
+
+      return res.status(201).json(createdUser);
+    } catch (e) {
+      next(e);
     }
   }
 );
@@ -36,33 +61,29 @@ app.get(
   }
 );
 
-app.post(
-  "/users",
-  async (req: Request, res: Response): Promise<Response<IUser>> => {
-    try {
-      const createdUser = await User.create(req.body);
-
-      return res.status(201).json(createdUser);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-);
-
 app.put(
   "/users/:id",
-  async (req: Request, res: Response): Promise<Response<IUser>> => {
+  async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response<IUser>> => {
     try {
       const { id } = req.params;
+
+      const { error, value } = UserValidator.update.validate(req.body);
+      if (error) {
+        throw new ApiError(error.message, 400);
+      }
       const updatedUser = await User.findOneAndUpdate(
         { _id: id },
-        { ...req.body },
+        { ...value },
         { returnDocument: "after" }
       );
 
       return res.status(200).json(updatedUser);
     } catch (e) {
-      console.log(e);
+      next(e);
     }
   }
 );
@@ -80,6 +101,11 @@ app.delete(
     }
   }
 );
+
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+  const status = error.status || 500;
+  return res.status(status).json(error.message);
+});
 
 app.listen(configs.PORT || 5000, () => {
   mongoose
