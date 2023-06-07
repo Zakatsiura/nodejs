@@ -102,7 +102,7 @@ app.delete(
   }
 );
 
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+app.use((error: ApiError, req: Request, res: Response, next: NextFunction) => {
   const status = error.status || 500;
   return res.status(status).json(error.message);
 });
