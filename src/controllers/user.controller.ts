@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
-import { ApiError } from "../errors";
 import { User } from "../models/User.model";
 import { userService } from "../services/user.service";
 import { IUser } from "../types/user.type";
-import { UserValidator } from "../validators";
 
 class UserController {
   public async findAll(
@@ -55,17 +53,7 @@ class UserController {
     next: NextFunction
   ): Promise<Response<IUser>> {
     try {
-      const { id } = req.params;
-
-      const { error, value } = UserValidator.update.validate(req.body);
-      if (error) {
-        throw new ApiError(error.message, 400);
-      }
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: id },
-        { ...value },
-        { returnDocument: "after" }
-      );
+      const updatedUser = await User.findOneAndUpdate(req.res.locals as IUser);
 
       return res.status(200).json(updatedUser);
     } catch (e) {

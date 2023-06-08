@@ -13,11 +13,35 @@ class UserService {
   }
 
   public async create(data: IUser): Promise<IUser> {
-    return User.create(data);
+    try {
+      return User.create(data);
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
   }
 
   public async findById(id: string): Promise<IUser> {
-    return User.findById(id);
+    try {
+      return User.findById(id);
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async updateById(id: string): Promise<IUser> {
+    try {
+      return User.findById(id);
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
+  }
+
+  public async deleteById(id: string): Promise<IUser> {
+    try {
+      return User.findById(id);
+    } catch (e) {
+      throw new ApiError(e.message, e.status);
+    }
   }
 }
 
